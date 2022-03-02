@@ -32,25 +32,48 @@ def main():
     loop.set_debug(args.debug)
 
     if args.http:
-        http_server = server.Server(args.http,
-                                    args.get_host,
-                                    associations,
-                                    args.get_ip,
-                                    args.nsupdatecommands,
-                                    nskeyfile=args.nskeyfile)
-        info("starting http server at %s:%d" % args.http)
-        loop.run_until_complete(http_server.listen(loop))
+        if args.ipv4:
+            http_server = server.Server(args.http,
+                                        args.get_host,
+                                        associations,
+                                        args.get_ip,
+                                        args.nsupdatecommands,
+                                        args.ipv4,
+                                        nskeyfile=args.nskeyfile)
+            info("starting http server at %s:%d" % args.http)
+            loop.run_until_complete(http_server.listen(loop))
+        else:
+            http_server = server.Server(args.http,
+                                        args.get_host,
+                                        associations,
+                                        args.get_ip,
+                                        args.nsupdatecommands,
+                                        nskeyfile=args.nskeyfile)
+            info("starting http server at %s:%d" % args.http)
+            loop.run_until_complete(http_server.listen(loop))
 
     if args.https:
-        https_server = server.Server(args.https,
-                                     args.get_host,
-                                     associations,
-                                     args.get_ip,
-                                     args.nsupdatecommands,
-                                     nskeyfile=args.nskeyfile,
-                                     tls=(args.cert, args.key))
-        info("starting https server at %s:%d" % args.https)
-        loop.run_until_complete(https_server.listen(loop))
+        if args.ipv4:
+            https_server = server.Server(args.https,
+                                         args.get_host,
+                                         associations,
+                                         args.get_ip,
+                                         args.nsupdatecommands,
+                                         args.ipv4,
+                                         nskeyfile=args.nskeyfile,
+                                         tls=(args.cert, args.key))
+            info("starting https server at %s:%d" % args.https)
+            loop.run_until_complete(https_server.listen(loop))
+        else:
+            https_server = server.Server(args.https,
+                                         args.get_host,
+                                         associations,
+                                         args.get_ip,
+                                         args.nsupdatecommands,
+                                         nskeyfile=args.nskeyfile,
+                                         tls=(args.cert, args.key))
+            info("starting https server at %s:%d" % args.https)
+            loop.run_until_complete(https_server.listen(loop))
 
     try:
         loop.run_forever()

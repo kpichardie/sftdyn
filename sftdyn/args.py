@@ -24,6 +24,7 @@ def get_parser(intro):
                      help="Enable HTTPS server")
     cmd.add_argument("-c", "--cert", type=str, help="HTTPS X.509 cert file")
     cmd.add_argument("-k", "--key", type=str, help="HTTPS X.509 key file")
+    cmd.add_argument("-4", "--ipv4", action="store_true", help="Force ipv4 for dns")
     cmd.add_argument("-i", "--interactive", action="store_true",
                      help="launch a interactive session")
     cmd.add_argument("--nskeyfile", type=str,

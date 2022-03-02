@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  sftdyn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - "./etc/bind/named.conf:/etc/bind/named.conf"
+      - "./etc/sample.conf:/etc/sftdyn/conf"
+    command: ./entrypoint.sh -4 -v
+    ports:
+      - 192.168.1.13:53:53
+      - 192.168.1.13:53:53/udp
+

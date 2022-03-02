@@ -16,7 +16,7 @@ class Server:
     """
 
     def __init__(self, addr, get_host, associations, get_ip,
-            nsupdatecommands, nskeyfile=None, tls=None):
+            nsupdatecommands, ipv4=None, nskeyfile=None, tls=None):
 
         """
         addr: (ip, port) to listen on
@@ -34,6 +34,7 @@ class Server:
         self.get_ip = get_ip
         self.nsupdatecommands = nsupdatecommands
         self.nskeyfile = nskeyfile
+        self.ipv4 = ipv4
 
         if tls:
             # create SSLContext for our TLS server
@@ -114,7 +115,11 @@ class Server:
         iter(cmdlist)  # check if the generated updatecommand is iterable
         cmd = "\n".join(cmdlist) + "\n"
 
-        nsupdate = ['nsupdate', '-l']
+        if self.ipv4 is not None:
+           nsupdate = ['nsupdate', '-l', '-4']
+        else:
+           nsupdate = ['nsupdate', '-l']
+
         if self.nskeyfile:
             nsupdate.extend(['-k', self.nskeyfile])
 
