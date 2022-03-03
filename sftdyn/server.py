@@ -100,12 +100,25 @@ class Server:
             return ip, 200
 
         # call to user-defined function
-        host = self.get_host(key, ip)
+        values={}
+        host=False
+        try:
+            for keyval in key.split(","):
+                pair=keyval.split("=")
+                values[pair[0]]=pair[1]
+            if self.get_host(values["key"], ip):
+                if "subhost" in values:
+                    info("Update subhost %s %s", values["subhost"], ip)
+                    host=values["subhost"]
+        except (KeyError,IndexError):
+            pass
         if not host:
-            return "BADKEY", 403
+            host = self.get_host(key, ip)
+            if not host:
+                return "BADKEY", 403
 
-        if self.associations.get(host, None) == ip:
-            return "UPTODATE", 200
+            if self.associations.get(host, None) == ip:
+                return "UPTODATE", 200
 
         info("update request for %s => %s" % (host, ip))
 
