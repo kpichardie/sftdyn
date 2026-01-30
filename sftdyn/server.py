@@ -2,13 +2,11 @@
 http(s) server implementation for sftdyn.
 """
 
-
 import ssl
 import asyncio
 
 from logging import info, debug
 from aiohttp import web
-
 
 class Server:
     """
@@ -110,6 +108,9 @@ class Server:
                 if "subhost" in values:
                     info("Update subhost %s %s", values["subhost"], ip)
                     host=values["subhost"]
+                if "ip" in values:
+                    info("Update subhost %s %s", values["subhost"], values["ip"])
+                    ip=values["ip"]
         except (KeyError,IndexError):
             pass
         if not host:
